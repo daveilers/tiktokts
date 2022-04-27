@@ -22,17 +22,17 @@ func main() {
 	}
 	mp3Data, err := tiktoktts(text, *voice)
 	if err != nil {
-		log.Printf("Ack %q %v: %v", text, *voice, err)
-	}
-	if !*quiet {
-		playMp3(io.NopCloser(bytes.NewReader(mp3Data)))
-		time.Sleep(time.Second)
+		log.Fatalf("Ack %q %v: %v", text, *voice, err)
 	}
 	if *output != "" {
 		err = os.WriteFile(*output, mp3Data, 0700)
 		if err != nil {
-			log.Printf("Problem writing file %q: %v", *output, err)
+			log.Fatalf("Problem writing file %q: %v", *output, err)
 		}
+	}
+	if !*quiet {
+		playMp3(io.NopCloser(bytes.NewReader(mp3Data)))
+		time.Sleep(time.Second)
 	}
 }
 
